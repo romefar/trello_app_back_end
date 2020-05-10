@@ -1,2 +1,2 @@
-# Trello API back and
- A simple REST API which allows you to do simple CRUD operations with role permissions. Simulating trello api.
+# Trello
+ A simple REST API which allows you to do simple CRUD operations with role permissions and authorization. Simulating trello api.
