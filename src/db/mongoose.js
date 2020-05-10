@@ -8,7 +8,7 @@ mongoose.connect(`mongodb://${process.env.DB_DEV_HOST}:${process.env.DB_DEV_DB_P
   useFindAndModify: false
 })
   .then(() => {
-    console.log(chalk.green('Succesfully connected to the database.'))
+    console.log(chalk.green(' -- Succesfully connected to the database.'))
   })
   .catch(err => {
     console.log(chalk.red('An error was occured.'))
