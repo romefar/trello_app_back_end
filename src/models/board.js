@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose')
-const User = require('./user')
 
 const cardSchema = new Schema({
   name: {
@@ -56,8 +55,18 @@ const boardSchema = new Schema({
 
 boardSchema.pre('save', async function (next) {
   const board = this
+  const User = require('./user')
   const { role } = await User.findById(board.owner)
-  if (role !== 'admin') throw new Error('You don\'t have permissions to create a board.')
+  if (role !== 'admin') throw new Error('You don\'t have permissions to create/update a board.')
+
+  next()
+})
+
+boardSchema.pre('remove', async function (next) {
+  const board = this
+  const User = require('./user')
+  const { role } = await User.findById(board.owner)
+  if (role !== 'admin') throw new Error('You don\'t have permissions to delete a board.')
 
   next()
 })
