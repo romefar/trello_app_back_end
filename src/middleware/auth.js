@@ -14,8 +14,9 @@ const auth = async (req, res, next) => {
       return res.status(401).send({ error: 'User is not authenticated.' })
     }
 
-    if (process.env.NODE_ENV === 'development') req.token = token
+    req.token = token
     req.user = user
+    logger.info(`200 - An authorized request was made by ${user.email} to - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     next()
   } catch (err) {
     logger.error(`500 - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
