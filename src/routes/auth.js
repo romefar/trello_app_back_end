@@ -19,10 +19,8 @@ router.post('/login', async (req, res) => {
     const token = await user.generateAuthToken()
     const responseObj = { message: `User ${user.email} succesfully authorized.`, user }
 
-    if (process.env.NODE_ENV === 'development') {
-      responseObj.token = token
-    }
-
+    responseObj.token = token
+    logger.info(`200 - A user ${user.email} was succesfully logged in - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     res.send(responseObj)
   } catch (error) {
     logger.error(`500 - ${error.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
@@ -35,6 +33,7 @@ router.post('/logout', auth, async (req, res) => {
     const { token, user } = req
     user.tokens = user.tokens.filter(item => item.token !== token)
     await user.save()
+    logger.info(`200 - A user ${user.email} was succesfully logged out - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     res.send({ message: `User ${user.email} succesfully logout.`, user })
   } catch (error) {
     logger.error(`500 - ${error.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
@@ -46,7 +45,7 @@ router.post('/signup', schemaValidator(userSchemaCreate), async (req, res) => {
   try {
     const user = new User(req.body)
     await user.save()
-
+    logger.info(`201 - A user ${user.email} was succesfully registered - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     res.status(201).send(user)
   } catch (error) {
     logger.error(`500 - ${error.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
