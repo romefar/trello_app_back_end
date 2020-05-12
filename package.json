@@ -4,6 +4,7 @@
   "description": "A simple app for making CRUD operations with role permissions.",
   "main": "app.js",
   "scripts": {
+    "start": "node src/app.js",
     "dev": "nodemon src/app.js"
   },
   "repository": {
