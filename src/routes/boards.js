@@ -25,6 +25,7 @@ router.post('/', schemaValidator(boardSchemaCreate), auth, async (req, res) => {
     const board = new Board(body)
     board.owner = user._id
     await board.save()
+    logger.info(`201 - A board ${board._id} was succesfully created by ${user.email} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     res.send(board)
   } catch (error) {
     logger.error(`500 - ${error.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
@@ -48,7 +49,7 @@ router.put('/:id', schemaValidator(boardSchemaUpdate), auth, async (req, res) =>
       logger.error(`404 - Unable to find a board - ${req.originalUrl} - ${req.method} - ${req.ip}`)
       return res.status(404).send({ error: 'Unable to find a board.' })
     }
-
+    logger.info(`200 - A board ${id} was succesfully updated by ${user.email} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     res.send(board)
   } catch (error) {
     logger.error(`500 - ${error.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
@@ -66,7 +67,7 @@ router.delete('/:id', auth, async (req, res) => {
       logger.error(`404 - Unable to find a board - ${req.originalUrl} - ${req.method} - ${req.ip}`)
       return res.status(404).send({ error: 'Unable to find a board.' })
     }
-
+    logger.info(`200 - A board ${id} was succesfully deleted by ${user.email} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     res.send(removedBoard)
   } catch (error) {
     logger.error(`500 - ${error.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
