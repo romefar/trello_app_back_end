@@ -13,13 +13,13 @@ const options = {
       format.json()
     )
   },
-  warnFile: {
-    level: 'warn',
-    filename: path.join(__dirname, '../../logs/warnings.log')
-  },
   infoFile: {
     level: 'info',
-    filename: path.join(__dirname, '../../logs/info.log')
+    filename: path.join(__dirname, '../../logs/info.log'),
+    defaultMeta: { service: 'trello_api_back_end' },
+    format: format.combine(
+      format.json()
+    )
   },
   console: {
     level: 'debug',
@@ -27,7 +27,7 @@ const options = {
     handleRejections: true,
     format: format.combine(
       format.colorize(),
-      format.simple()
+      format.printf(info => `${info.level}: ${info.message} [${info.label}] ${info.timestamp}`)
     )
   }
 }
@@ -36,15 +36,15 @@ const logger = new CreateLogger({
   format: format.combine(
     format.timestamp({
       format: 'YYYY-MM-DD HH:mm:ss'
-    })
+    }),
+    format.label({ label: path.basename(process.mainModule.filename) })
   ),
   exitOnError: false
 })
 
 const productionLogger = [
-  new File(options.errorFile),
   new File(options.infoFile),
-  new File(options.warnFile)
+  new File(options.errorFile)
 ]
 
 if (process.env.NODE_ENV !== 'production') {
