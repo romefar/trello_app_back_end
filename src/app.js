@@ -1,8 +1,8 @@
+require('dotenv/config')
 const express = require('express')
 const helmet = require('helmet')
 const logger = require('./config/winston')
 const connect = require('./db/mongoose')
-require('dotenv/config')
 
 const genericRoute = require('./routes/generic')
 const authRoute = require('./routes/auth')
