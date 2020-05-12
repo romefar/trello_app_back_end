@@ -44,6 +44,7 @@ router.put('/', schemaValidator(userSchemaUpdate), auth, async (req, res) => {
       logger.error(`404 - Unable to find a user - ${req.originalUrl} - ${req.method} - ${req.ip}`)
       return res.status(404).send({ error: 'Unable to find a user.' })
     }
+    logger.info(`200 - A user's profile (${user.email}) was succesfully updated - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     res.send(user)
   } catch (error) {
     logger.error(`500 - ${error.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
@@ -60,7 +61,7 @@ router.delete('/', auth, async (req, res) => {
       logger.error(`404 - Unable to find a user - ${req.originalUrl} - ${req.method} - ${req.ip}`)
       return res.status(404).send({ error: 'Unable to find a user.' })
     }
-
+    logger.info(`200 - A user's profile (${user.email}) was succesfully removed - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     res.send(removedUser)
   } catch (error) {
     logger.error(`500 - ${error.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`)
