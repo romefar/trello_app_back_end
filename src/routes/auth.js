@@ -44,6 +44,13 @@ router.post('/logout', auth, async (req, res) => {
 router.post('/signup', schemaValidator(userSchemaCreate), async (req, res) => {
   try {
     const user = new User(req.body)
+    const isExist = await User.find({ email: user.email })
+
+    if (isExist) {
+      logger.error(`409 - Email is aleady in use - ${req.originalUrl} - ${req.method} - ${req.ip}`)
+      return res.status(409).send({ error: 'Email is aleady in use.' })
+    }
+
     await user.save()
     logger.info(`201 - A user ${user.email} was succesfully registered - ${req.originalUrl} - ${req.method} - ${req.ip}`)
     res.status(201).send(user)
